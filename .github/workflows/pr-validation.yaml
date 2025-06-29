@@ -1,0 +1,21 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install htmlhint stylelint stylelint-config-standard --save-dev
+      - run: npx htmlhint "src/**/*.html"
+      - run: npx stylelint "styles/**/*.css"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install parcel --save-dev
+      - run: npx parcel build src/index.html
